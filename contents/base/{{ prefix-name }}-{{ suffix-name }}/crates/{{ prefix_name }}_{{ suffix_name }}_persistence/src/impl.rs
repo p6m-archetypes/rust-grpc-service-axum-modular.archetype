@@ -1,5 +1,5 @@
 use crate::sea_orm::entity::prelude::*;
-use crate::{{{ PrefixName }}{{ SuffixName }}Persistence, DbResult};
+use crate::{{'{'}}{{ PrefixName }}{{ SuffixName }}Persistence, DbResult};
 
 use crate::entities::*;
 use crate::page::Page;

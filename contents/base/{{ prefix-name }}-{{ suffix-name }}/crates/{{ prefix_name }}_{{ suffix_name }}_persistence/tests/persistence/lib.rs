@@ -2,7 +2,7 @@ use anyhow::Result;
 use {{ prefix_name }}_{{ suffix_name }}_persistence::entities::*;
 use {{ prefix_name }}_{{ suffix_name }}_persistence::sea_orm::prelude::*;
 use {{ prefix_name }}_{{ suffix_name }}_persistence::sea_orm::*;
-use {{ prefix_name }}_{{ suffix_name }}_persistence::{{{ PrefixName }}{{ SuffixName }}Persistence, DbResult, Page};
+use {{ prefix_name }}_{{ suffix_name }}_persistence::{{'{'}}{{ PrefixName }}{{ SuffixName }}Persistence, DbResult, Page};
 
 #[tokio::test]
 async fn test_insert_{{ prefix_name }}() -> Result<()> {

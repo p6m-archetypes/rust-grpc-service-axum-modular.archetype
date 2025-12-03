@@ -60,7 +60,7 @@ render(Directory("contents/base"), context);
 // }
 
 render(Archetype("manifests"), context["project-name"], context + #{
-    "language": ".NET",
+    "language": "Rust",
     "protocol": "gRPC",
 });
 

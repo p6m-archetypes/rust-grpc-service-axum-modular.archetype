@@ -5,7 +5,7 @@ use {{ prefix_name }}_{{ suffix_name }}_persistence::Page;
 
 use crate::{{ PrefixName }}{{ SuffixName }}Core;
 use crate::conversion::{ConvertFrom, TryConvertTo};
-use crate::proto::{{{ PrefixName }}, Get{{ PrefixName }}Request, Get{{ PrefixName }}sRequest, Get{{ PrefixName }}sResponse};
+use crate::proto::{{'{'}}{{ PrefixName }}, Get{{ PrefixName }}Request, Get{{ PrefixName }}sRequest, Get{{ PrefixName }}sResponse};
 use crate::proto::{{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }};
 
 #[tonic::async_trait]

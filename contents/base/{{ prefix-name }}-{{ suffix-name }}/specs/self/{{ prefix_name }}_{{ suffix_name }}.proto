@@ -19,7 +19,7 @@ message Get{{ PrefixName }}Request {
 }
 
 // Get Prefix Names Request
-message GetPrefix NamesRequest {
+message Get{{ PrefixName }}sRequest {
     // Page Index
     uint32 page_index = 1;
     // Page Size
