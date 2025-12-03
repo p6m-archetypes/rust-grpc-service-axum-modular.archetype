@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package {{ prefix_name }}_{{ suffix_name }};
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+service {{ PrefixName }}{{ SuffixName }} {
+    rpc Create{{ PrefixName }} ({{ PrefixName }}) returns ({{ PrefixName }});
+    rpc Get{{ PrefixName }} (Get{{ PrefixName }}Request) returns ({{ PrefixName }});
+    rpc Get{{ PrefixName }}s (Get{{ PrefixName }}sRequest) returns (Get{{ PrefixName }}sResponse);
+    rpc Update{{ PrefixName }} ({{ PrefixName }}) returns ({{ PrefixName }});
+}
+
+// Get Prefix Name Request
+message Get{{ PrefixName }}Request {
+    // Prefix Name Id
+    string id = 1;
+}
+
+// Get Prefix Names Request
+message GetPrefix NamesRequest {
+    // Page Index
+    uint32 page_index = 1;
+    // Page Size
+    uint32 page_size = 2;
+}
+
+message Get{{ PrefixName }}sResponse {
+    // {{ PrefixName }} Records
+    repeated {{ PrefixName }} records = 1;
+    // Current Page Index
+    uint32 index = 2;
+    // Next Page Index
+    uint32 next = 4;
+    // Has Next Page
+    bool has_next = 3;
+    // Previous Page Index
+    uint32 previous = 6;
+    // Has Previous Page
+    bool has_previous = 5;
+    // Total Pages
+    uint32 total = 7;
+    // Total {{ PrefixName }} Records
+    uint64 total_records = 8;
+}
+
+// Prefix Name
+message {{ PrefixName }} {
+    // Prefix Name Id
+    optional string id = 1;
+    // Contents
+    string contents = 2;
+}
+
