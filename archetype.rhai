@@ -28,7 +28,6 @@ context += prompt("Persistence:", "persistence", #{
     type: Select([
         "PostgreSQL",
         "MySQL",
-        "MSSQL",
         "None",
     ]),
     defaults_with: "PostgreSQL",
