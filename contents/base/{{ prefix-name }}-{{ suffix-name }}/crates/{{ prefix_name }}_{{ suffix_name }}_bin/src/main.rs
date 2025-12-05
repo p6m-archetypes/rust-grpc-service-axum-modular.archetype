@@ -1,8 +1,8 @@
 use anyhow::Result;
 
 use {{ prefix_name }}_{{ suffix_name }}_core::{{ PrefixName }}{{ SuffixName }}Core;
-use {{ prefix_name }}_{{ suffix_name }}_persistence::{{ PrefixName }}{{ SuffixName }}Persistence;
-use {{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }}Server;
+{% if persistence != 'None' %}use {{ prefix_name }}_{{ suffix_name }}_persistence::{{ PrefixName }}{{ SuffixName }}Persistence;
+{% endif %}use {{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }}Server;
 
 mod cli;
 mod settings;
@@ -12,11 +12,12 @@ mod traces;
 async fn main() -> Result<()> {
     dotenv::dotenv().ok();
     let args = cli::arg_matches();
-    let mut settings = settings::Settings::new(&args)?;
-    traces::init(settings.tracing())?;
+{% if persistence != 'None' %}    let mut settings = settings::Settings::new(&args)?;
+{% else %}    let settings = settings::Settings::new(&args)?;
+{% endif %}    traces::init(settings.tracing())?;
 
     match args.subcommand() {
-        Some(("migrate", args)) => match args.subcommand() {
+{% if persistence != 'None' %}        Some(("migrate", args)) => match args.subcommand() {
             Some(("up", _args)) => {
                 settings.persistence_mut().set_migrate(Some(false));
                 {{ PrefixName }}{{ SuffixName }}Persistence::builder()
@@ -38,7 +39,7 @@ async fn main() -> Result<()> {
             }
             _ => unreachable!(),
         },
-        Some(("config", args)) => match args.subcommand() {
+{% endif %}        Some(("config", args)) => match args.subcommand() {
             Some(("defaults", _)) => settings::Settings::default().print()?,
             Some(("merged", _)) => settings.print()?,
             Some(("generate", _)) => settings.generate()?,
@@ -49,12 +50,13 @@ async fn main() -> Result<()> {
         }
         None => {
             tracing::info!("Initializing...");
-            let persistence = {{ PrefixName }}{{ SuffixName }}Persistence::builder()
+{% if persistence != 'None' %}            let persistence = {{ PrefixName }}{{ SuffixName }}Persistence::builder()
                 .with_settings(settings.persistence())
                 .build()
                 .await?;
             let core = {{ PrefixName }}{{ SuffixName }}Core::builder(persistence)
-                .with_settings(settings.core())
+{% else %}            let core = {{ PrefixName }}{{ SuffixName }}Core::builder()
+{% endif %}                .with_settings(settings.core())
                 .build()
                 .await?;
             let server = {{ PrefixName }}{{ SuffixName }}Server::builder(core)

@@ -1,12 +1,12 @@
-mod conversion;
-mod r#impl;
+{% if persistence != 'None' %}mod conversion;
+{% endif %}mod r#impl;
 pub mod settings;
 
 use anyhow::Result;
 
 use crate::settings::CoreSettings;
-use {{ prefix_name }}_{{ suffix_name }}_persistence::{{ PrefixName }}{{ SuffixName }}Persistence;
-
+{% if persistence != 'None' %}use {{ prefix_name }}_{{ suffix_name }}_persistence::{{ PrefixName }}{{ SuffixName }}Persistence;
+{% endif %}
 pub mod proto {
     tonic::include_proto!("{{ prefix_name }}_{{ suffix_name }}");
 
@@ -15,28 +15,38 @@ pub mod proto {
 
 #[derive(Clone, Debug)]
 pub struct {{ PrefixName }}{{ SuffixName }}Core {
-    persistence: {{ PrefixName }}{{ SuffixName }}Persistence,
-}
-
-impl {{ PrefixName }}{{ SuffixName }}Core {
-    pub fn builder(persistence: {{ PrefixName }}{{ SuffixName }}Persistence) -> Builder {
-        Builder::new(persistence)
-    }
-}
-
-pub struct Builder {
-    persistence: {{ PrefixName }}{{ SuffixName }}Persistence,
+{% if persistence != 'None' %}    persistence: {{ PrefixName }}{{ SuffixName }}Persistence,
+{% endif %}    #[allow(dead_code)]
     settings: CoreSettings,
 }
 
+impl {{ PrefixName }}{{ SuffixName }}Core {
+{% if persistence != 'None' %}    pub fn builder(persistence: {{ PrefixName }}{{ SuffixName }}Persistence) -> Builder {
+        Builder::new(persistence)
+    }
+{% else %}    pub fn builder() -> Builder {
+        Builder::new()
+    }
+{% endif %}}
+
+pub struct Builder {
+{% if persistence != 'None' %}    persistence: {{ PrefixName }}{{ SuffixName }}Persistence,
+{% endif %}    settings: CoreSettings,
+}
+
 impl Builder {
-    pub fn new(persistence: {{ PrefixName }}{{ SuffixName }}Persistence) -> Self {
+{% if persistence != 'None' %}    pub fn new(persistence: {{ PrefixName }}{{ SuffixName }}Persistence) -> Self {
         Self {
             persistence,
             settings: Default::default(),
         }
     }
-
+{% else %}    pub fn new() -> Self {
+        Self {
+            settings: Default::default(),
+        }
+    }
+{% endif %}
     pub fn with_settings(mut self, settings: &CoreSettings) -> Self {
         self.settings = settings.clone();
         self
@@ -44,7 +54,8 @@ impl Builder {
 
     pub async fn build(self) -> Result<{{ PrefixName }}{{ SuffixName }}Core> {
         Ok({{ PrefixName }}{{ SuffixName }}Core {
-            persistence: self.persistence,
+{% if persistence != 'None' %}            persistence: self.persistence,
+{% endif %}            settings: self.settings,
         })
     }
 }

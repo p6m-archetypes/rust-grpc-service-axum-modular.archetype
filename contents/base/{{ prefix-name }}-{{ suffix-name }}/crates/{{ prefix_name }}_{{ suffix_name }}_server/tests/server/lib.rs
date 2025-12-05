@@ -1,4 +1,4 @@
-use anyhow::Result;
+{% if persistence != 'None' %}use anyhow::Result;
 use {{ prefix_name }}_{{ suffix_name }}_client::proto::{{ prefix_name }}_{{ suffix_name }}_client::{{ PrefixName }}{{ SuffixName }}Client;
 use {{ prefix_name }}_{{ suffix_name }}_client::proto::Create{{ PrefixName }}Request;
 use {{ prefix_name }}_{{ suffix_name }}_core::{{ PrefixName }}{{ SuffixName }}Core;
@@ -46,3 +46,36 @@ async fn init() -> Result<({{ PrefixName }}{{ SuffixName }}Client<Channel>, {{ P
 
     Ok((client, server))
 }
+{% else %}use anyhow::Result;
+use {{ prefix_name }}_{{ suffix_name }}_client::proto::{{ prefix_name }}_{{ suffix_name }}_client::{{ PrefixName }}{{ SuffixName }}Client;
+use {{ prefix_name }}_{{ suffix_name }}_core::{{ PrefixName }}{{ SuffixName }}Core;
+use {{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }}Server;
+use tonic::transport::Channel;
+
+#[tokio::test]
+async fn test_server_starts() -> Result<()> {
+    let (_client, _server) = init().await?;
+    Ok(())
+}
+
+async fn init() -> Result<({{ PrefixName }}{{ SuffixName }}Client<Channel>, {{ PrefixName }}{{ SuffixName }}Server)> {
+    let core = {{ PrefixName }}{{ SuffixName }}Core::builder()
+        .build()
+        .await?;
+    let server = {{ PrefixName }}{{ SuffixName }}Server::builder(core)
+        .with_random_port()
+        .build()
+        .await?;
+
+    let server_clone = server.clone();
+
+    tokio::spawn(async move {
+        let _ = server_clone.serve().await;
+    });
+
+    let addr = format!("http://localhost:{}", server.service_port());
+    let client = {{ PrefixName }}{{ SuffixName }}Client::connect(addr).await?;
+
+    Ok((client, server))
+}
+{% endif %}

@@ -8,8 +8,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::traces::TraceFormat;
 use {{ prefix_name }}_{{ suffix_name }}_core::settings::CoreSettings;
-use {{ prefix_name }}_{{ suffix_name }}_persistence::settings::PersistenceSettings;
-use {{ prefix_name }}_{{ suffix_name }}_server::settings::ServerSettings;
+{% if persistence != 'None' %}use {{ prefix_name }}_{{ suffix_name }}_persistence::settings::PersistenceSettings;
+{% endif %}use {{ prefix_name }}_{{ suffix_name }}_server::settings::ServerSettings;
 
 const DEFAULT_CONFIG_FILE: &str = "{{ prefix-name }}-{{ suffix-name }}";
 const DEFAULT_ENVIRONMENT_PREFIX: &str = "APPLICATION";
@@ -18,8 +18,8 @@ const DEFAULT_ENVIRONMENT_PREFIX: &str = "APPLICATION";
 pub struct Settings {
     server: ServerSettings,
     core: CoreSettings,
-    persistence: PersistenceSettings,
-    tracing: TraceSettings,
+{% if persistence != 'None' %}    persistence: PersistenceSettings,
+{% endif %}    tracing: TraceSettings,
 }
 
 impl Settings {
@@ -31,7 +31,7 @@ impl Settings {
         &self.core
     }
 
-    pub fn persistence(&self) -> &PersistenceSettings {
+{% if persistence != 'None' %}    pub fn persistence(&self) -> &PersistenceSettings {
         &self.persistence
     }
 
@@ -39,7 +39,7 @@ impl Settings {
         &mut self.persistence
     }
 
-    pub fn tracing(&self) -> &TraceSettings {
+{% endif %}    pub fn tracing(&self) -> &TraceSettings {
         &self.tracing
     }
 
@@ -96,14 +96,14 @@ impl Settings {
 
         // Merge Command Line overrides
         let mut mappings = HashMap::new();
-        mappings.insert("database-url".into(), "persistence.database.url".into());
-        mappings.insert("host".into(), "server.host".into());
-        mappings.insert("log-sql".into(), "persistence.database.log_sql".into());
-        // mappings.insert("management-port".into(), "server.management.port".into());
-        mappings.insert("migrate".into(), "persistence.migrate".into());
-        mappings.insert("service-port".into(), "server.service.port".into());
-        mappings.insert("temp-db".into(), "persistence.temporary".into());
-        mappings.insert("tracing-format".into(), "tracing.format".into());
+{% if persistence != 'None' %}        mappings.insert("database-url".into(), "persistence.database.url".into());
+{% endif %}        mappings.insert("host".into(), "server.host".into());
+{% if persistence != 'None' %}        mappings.insert("log-sql".into(), "persistence.database.log_sql".into());
+{% endif %}        // mappings.insert("management-port".into(), "server.management.port".into());
+{% if persistence != 'None' %}        mappings.insert("migrate".into(), "persistence.migrate".into());
+{% endif %}        mappings.insert("service-port".into(), "server.service.port".into());
+{% if persistence != 'None' %}        mappings.insert("temp-db".into(), "persistence.temporary".into());
+{% endif %}        mappings.insert("tracing-format".into(), "tracing.format".into());
         mappings.insert("tracing-filter".into(), "tracing.filter".into());
         let config = config.add_source(Clap::new(args.clone(), mappings));
 

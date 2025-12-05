@@ -5,7 +5,7 @@ use crate::traces::TraceFormat;
 pub fn arg_matches() -> ArgMatches {
     command!()
         .name("{{ prefix-name }}-{{ suffix-name }}")
-        .subcommand(
+{% if persistence != 'None' %}        .subcommand(
             Command::new("migrate")
                 .subcommand_required(true)
                 .about("Database Migrations")
@@ -20,7 +20,7 @@ pub fn arg_matches() -> ArgMatches {
                         ),
                 ),
         )
-        .subcommand(
+{% endif %}        .subcommand(
             Command::new("config")
                 .about("Configuration Operations")
                 .subcommand_required(true)
@@ -45,14 +45,14 @@ pub fn arg_matches() -> ArgMatches {
                 .long("host")
                 .takes_value(true),
         )
-        .arg(
+{% if persistence != 'None' %}        .arg(
             Arg::new("log-sql")
                 .help("Turns sql logging on or off.")
                 .long("log-sql")
                 .default_missing_value("true")
                 .possible_values(&["true", "false"]),
         )
-        .arg(
+{% endif %}        .arg(
             Arg::new("service-port")
                 .help("Service Port")
                 .short('p')
@@ -60,7 +60,7 @@ pub fn arg_matches() -> ArgMatches {
                 .takes_value(true)
                 .validator(is_valid_port),
         )
-        .arg(
+{% if persistence != 'None' %}        .arg(
             Arg::new("temp-db")
                 .help("Initialize and migrate an ephemeral database")
                 .long("temp-db")
@@ -78,7 +78,7 @@ pub fn arg_matches() -> ArgMatches {
                 .long("database-url")
                 .takes_value(true),
         )
-        .arg(
+{% endif %}        .arg(
             Arg::new("tracing-format")
                 .help("Specify logging format")
                 .long("tracing-format")

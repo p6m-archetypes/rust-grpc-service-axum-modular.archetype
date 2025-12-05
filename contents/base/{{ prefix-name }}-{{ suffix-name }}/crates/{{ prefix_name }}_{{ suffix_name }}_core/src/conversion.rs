@@ -1,4 +1,4 @@
-use anyhow::Result;
+{% if persistence != 'None' %}use anyhow::Result;
 use {{ prefix_name }}_{{ suffix_name }}_persistence::{entities::*, sea_orm::prelude::Uuid, sea_orm::ActiveValue};
 use std::str::FromStr;
 use tonic::Status;
@@ -55,3 +55,4 @@ impl TryConvertTo<Uuid, Status> for String {
             .map_err(|_| Status::invalid_argument("Id was not set to a valid UUID".to_string()))
     }
 }
+{% endif %}
