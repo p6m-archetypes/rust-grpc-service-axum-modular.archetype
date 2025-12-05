@@ -7,14 +7,20 @@ edition = "2021"
 
 [dependencies]
 {{ prefix_name }}_{{ suffix_name }}_core = { path = "../{{ prefix_name }}_{{ suffix_name }}_core" }
-{{ prefix_name }}_{{ suffix_name }}_persistence = { path = "../{{ prefix_name }}_{{ suffix_name }}_persistence" }
+{% if persistence != 'None' %}{{ prefix_name }}_{{ suffix_name }}_persistence = { path = "../{{ prefix_name }}_{{ suffix_name }}_persistence" }
+{% endif %}
 
 anyhow = "1.0"
-serde = {version = "1.0", features = ["serde_derive"] }
+serde = { version = "1.0", features = ["serde_derive"] }
 tonic = "0.6.2"
 tonic-health = "0.5.0"
 tonic-reflection = "0.3.0"
-tokio = {version = "1", features = ["rt-multi-thread", "time", "macros", "net"]}
+tokio = { version = "1", features = [
+  "rt-multi-thread",
+  "time",
+  "macros",
+  "net",
+] }
 tokio-stream = "0.1"
 tracing = "0.1"
 tracing-attributes = "0.1"
@@ -25,3 +31,4 @@ tracing-attributes = "0.1"
 [[test]]
 name = "server"
 path = "tests/server/lib.rs"
+

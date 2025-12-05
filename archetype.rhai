@@ -54,7 +54,7 @@ if switch_enabled("debug-context") {
 }
 
 render(Directory("contents/base"), context);
-// render(Directory("contents/persistence-" + to_lower(context["persistence"])), context);
+render(Directory("contents/persistence-" + to_lower(context["persistence"])), context);
 // if context["persistence"] != "None" {
 //     render(Directory("contents/persistence-common"), context);
 // }
@@ -63,6 +63,9 @@ render(Archetype("manifests"), context["project-name"], context + #{
     "language": "Rust",
     "protocol": "gRPC",
 });
+
+
+render(Archetype("gitignore"), context["project-name"], #{ "ignore": ["Rust", "RustBinary"]});
 
 //
 // Publishing
