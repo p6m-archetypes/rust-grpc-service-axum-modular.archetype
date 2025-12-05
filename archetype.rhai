@@ -44,8 +44,14 @@ context += prompt("Service Port:", "service-port", #{
 });
 
 context += set("management-port", context["service-port"] + 1);
-context += set("database-port", 5432);
 context += set("debug-port", context["service-port"] + 9);
+
+// Set database port based on persistence type
+if context["persistence"] == "MySQL" {
+    context += set("database-port", 3306);
+} else {
+    context += set("database-port", 5432);
+}
 
 if switch_enabled("debug-context") {
     log(Info, `${archetect::archetype::description()} (${context["project-name"]}) Context:`);

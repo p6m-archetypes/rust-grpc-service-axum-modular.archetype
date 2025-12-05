@@ -1,0 +1,41 @@
+# -*- mode: Python -*-
+
+# Service configuration
+SERVICE_NAME = '{{ prefix-name }}-{{ suffix-name }}'
+SERVICE_PORT = {{ service-port }}
+MANAGEMENT_PORT = {{ management-port }}
+
+{% if persistence != 'None' %}
+# Database configuration
+DB_NAME = '{{ prefix_name }}_{{ suffix_name }}'
+{% endif %}
+
+# Build the Rust service
+docker_build(
+    SERVICE_NAME,
+    '.',
+    dockerfile='.platform/docker/local/Dockerfile',
+    live_update=[
+        sync('./target', '/app/target'),
+    ],
+)
+
+{% if persistence != 'None' %}
+# Load database resources
+load_dynamic('./tilt/database.Tiltfile')
+{% endif %}
+
+# Deploy Kubernetes resources
+k8s_yaml(kustomize('.platform/kubernetes/dev'))
+
+# Configure the service resource
+k8s_resource(
+    SERVICE_NAME,
+    port_forwards=[
+        port_forward(SERVICE_PORT, SERVICE_PORT, name='gRPC'),
+        port_forward(MANAGEMENT_PORT, MANAGEMENT_PORT, name='Management'),
+    ],
+{% if persistence != 'None' %}
+    resource_deps=['database'],
+{% endif %}
+)

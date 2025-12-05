@@ -7,7 +7,7 @@ test-ut:
 
 test-it:
     cargo test --test '*'
-                                                  
+
 test-all:
     cargo test
 
@@ -23,3 +23,13 @@ build-defaults := ''
 
 build build-options=build-defaults:
     cargo build {{'{'}}{ build-options }}
+
+# Local development with Tilt
+tilt-up:
+    tilt up
+
+tilt-down:
+    tilt down
+
+tilt-ci:
+    tilt ci
