@@ -28,6 +28,3 @@ jobs:
         with:
           release_type: ${{ github.event.inputs.release_type }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
