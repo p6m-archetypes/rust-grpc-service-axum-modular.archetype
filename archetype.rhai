@@ -26,11 +26,11 @@ context += render(Archetype("project-prompts"), ANSWERS + #{
 
 context += prompt("Persistence:", "persistence", #{
     type: Select([
+        "None",
         "PostgreSQL",
         "MySQL",
-        "None",
     ]),
-    defaults_with: "PostgreSQL",
+    defaults_with: "None",
 });
 
 context += prompt("Artifactory Host:", "artifactory-host", #{

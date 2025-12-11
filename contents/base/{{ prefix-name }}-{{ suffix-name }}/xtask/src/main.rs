@@ -4,7 +4,7 @@ use anyhow::Result;
 use clap::{ArgMatches, Command};
 
 const PG_USERNAME: &str = "test";
-const PG_DOCKER_NAME: &'static str = "postgres-xtask";
+const PG_DOCKER_NAME: &str = "postgres-xtask";
 const SERVICE_NAME: &str = "{{ prefix-name }}-service";
 
 fn main() -> Result<()> {
@@ -140,3 +140,4 @@ fn postgres_docker_command(command: &str) -> Result<()> {
 
     Ok(())
 }
+

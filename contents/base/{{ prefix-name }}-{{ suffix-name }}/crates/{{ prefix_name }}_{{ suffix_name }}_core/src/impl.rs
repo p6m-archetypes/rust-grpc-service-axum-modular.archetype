@@ -4,13 +4,13 @@ use tracing::info;
 use {{ prefix_name }}_{{ suffix_name }}_persistence::Page;
 
 use crate::{{ PrefixName }}{{ SuffixName }}Core;
-use crate::conversion::{ConvertFrom, TryConvertTo};
 use crate::proto::{{'{'}}{{ PrefixName }}, Get{{ PrefixName }}Request, Get{{ PrefixName }}sRequest, Get{{ PrefixName }}sResponse};
 use crate::proto::{{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }};
 
+use crate::conversion::{ConvertFrom, TryConvertTo};
+
 #[tonic::async_trait]
 impl {{ PrefixName }}{{ SuffixName }} for {{ PrefixName }}{{ SuffixName }}Core {
-
     async fn create_{{ prefix_name }}(&self, request: Request<{{ PrefixName }}>) -> Result<Response<{{ PrefixName }}>, Status> {
         let {{ prefix_name }} = request.into_inner();
         info!("Creating: {:?}", {{ prefix_name }});
@@ -84,13 +84,12 @@ impl {{ PrefixName }}{{ SuffixName }} for {{ PrefixName }}{{ SuffixName }}Core {
 {% else %}use tonic::{Request, Response, Status};
 use tracing::info;
 
-use crate::{{ PrefixName }}{{ SuffixName }}Core;
-use crate::proto::{{'{'}}{{ PrefixName }}, Get{{ PrefixName }}Request, Get{{ PrefixName }}sRequest, Get{{ PrefixName }}sResponse};
 use crate::proto::{{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }};
+use crate::proto::{{'{'}}{{ PrefixName }}, Get{{ PrefixName }}Request, Get{{ PrefixName }}sRequest, Get{{ PrefixName }}sResponse};
+use crate::{{ PrefixName }}{{ SuffixName }}Core;
 
 #[tonic::async_trait]
 impl {{ PrefixName }}{{ SuffixName }} for {{ PrefixName }}{{ SuffixName }}Core {
-
     async fn create_{{ prefix_name }}(&self, request: Request<{{ PrefixName }}>) -> Result<Response<{{ PrefixName }}>, Status> {
         let {{ prefix_name }} = request.into_inner();
         info!("Creating: {:?}", {{ prefix_name }});

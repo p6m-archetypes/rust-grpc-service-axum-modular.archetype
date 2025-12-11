@@ -23,17 +23,9 @@ async fn test_core() -> Result<()> {
 }
 
 async fn init() -> Result<({{ PrefixName }}{{ SuffixName }}Client<Channel>, {{ PrefixName }}{{ SuffixName }}Server)> {
-    let persistence = {{ PrefixName }}{{ SuffixName }}Persistence::builder()
-        .with_temp_db()
-        .build()
-        .await?;
-    let core = {{ PrefixName }}{{ SuffixName }}Core::builder(persistence)
-        .build()
-        .await?;
-    let server = {{ PrefixName }}{{ SuffixName }}Server::builder(core)
-        .with_random_port()
-        .build()
-        .await?;
+    let persistence = {{ PrefixName }}{{ SuffixName }}Persistence::builder().with_temp_db().build().await?;
+    let core = {{ PrefixName }}{{ SuffixName }}Core::builder(persistence).build().await?;
+    let server = {{ PrefixName }}{{ SuffixName }}Server::builder(core).with_random_port().build().await?;
 
     let server_clone = server.clone();
 
@@ -59,13 +51,8 @@ async fn test_server_starts() -> Result<()> {
 }
 
 async fn init() -> Result<({{ PrefixName }}{{ SuffixName }}Client<Channel>, {{ PrefixName }}{{ SuffixName }}Server)> {
-    let core = {{ PrefixName }}{{ SuffixName }}Core::builder()
-        .build()
-        .await?;
-    let server = {{ PrefixName }}{{ SuffixName }}Server::builder(core)
-        .with_random_port()
-        .build()
-        .await?;
+    let core = {{ PrefixName }}{{ SuffixName }}Core::builder().build().await?;
+    let server = {{ PrefixName }}{{ SuffixName }}Server::builder(core).with_random_port().build().await?;
 
     let server_clone = server.clone();
 

@@ -13,10 +13,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .file_descriptor_set_path(out_dir.join("{{ prefix_name }}_{{ suffix_name }}.bin"))
         .build_server(true)
         .build_client(false)
-        .compile(&[SELF_PROTO],
-                 &[SELF_DIR]
-        )
+        .compile(&[SELF_PROTO], &[SELF_DIR])
         .unwrap();
 
     Ok(())
 }
+

@@ -58,9 +58,7 @@ async fn test_core_builds() -> Result<()> {
 }
 
 async fn core() -> Result<{{ PrefixName }}{{ SuffixName }}Core> {
-    let core = {{ PrefixName }}{{ SuffixName }}Core::builder()
-        .build()
-        .await?;
+    let core = {{ PrefixName }}{{ SuffixName }}Core::builder().build().await?;
     Ok(core)
 }
 {% endif %}

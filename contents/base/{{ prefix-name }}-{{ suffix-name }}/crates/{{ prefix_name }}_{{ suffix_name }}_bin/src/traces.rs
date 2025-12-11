@@ -9,8 +9,9 @@ use tracing_subscriber::{fmt, EnvFilter};
 
 use crate::settings::TraceSettings;
 
-#[derive(Copy, Clone, Debug, ArgEnum, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Default, ArgEnum, Serialize, Deserialize)]
 pub enum TraceFormat {
+    #[default]
     standard,
     json,
     pretty,
@@ -21,12 +22,6 @@ impl TraceFormat {
         TraceFormat::value_variants()
             .iter()
             .filter_map(ArgEnum::to_possible_value)
-    }
-}
-
-impl Default for TraceFormat {
-    fn default() -> Self {
-        TraceFormat::standard
     }
 }
 

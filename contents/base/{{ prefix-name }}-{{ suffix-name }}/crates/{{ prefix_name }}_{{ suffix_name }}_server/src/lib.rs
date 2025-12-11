@@ -1,8 +1,7 @@
 use crate::settings::ServerSettings;
 use anyhow::Result;
 use {{ prefix_name }}_{{ suffix_name }}_core::{
-    proto::{{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }}Server as {{ PrefixName }}{{ SuffixName }}ProtoServer,
-    {{ PrefixName }}{{ SuffixName }}Core,
+    proto::{{ prefix_name }}_{{ suffix_name }}_server::{{ PrefixName }}{{ SuffixName }}Server as {{ PrefixName }}{{ SuffixName }}ProtoServer, {{ PrefixName }}{{ SuffixName }}Core,
 };
 use std::sync::Arc;
 use tokio::net::TcpListener;

@@ -1,6 +1,6 @@
 [package]
 name = "{{ prefix_name }}_{{ suffix_name }}_persistence"
-version = "0.1.0"
+version.workspace = true
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -8,17 +8,27 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0"
 async-trait = "0.1.52"
-sea-orm = { version = "^0.6", features = [ "sqlx-postgres", "runtime-tokio-rustls", "macros", "debug-print", "uuid" ], default-features = false }
-sea-schema = { version = "0.5.0", default-features = false, features = [ "migration", "debug-print" ] }
-serde = {version = "1.0", features = ["serde_derive"] }
-testcontainers-async = { git = "https://github.com/jimmiebfulton/testcontainers-async-rust.git"}
+sea-orm = { version = "^0.6", features = [
+  "sqlx-postgres",
+  "runtime-tokio-rustls",
+  "macros",
+  "debug-print",
+  "uuid",
+], default-features = false }
+sea-schema = { version = "0.5.0", default-features = false, features = [
+  "migration",
+  "debug-print",
+] }
+serde = { version = "1.0", features = ["serde_derive"] }
+testcontainers-async = { git = "https://github.com/jimmiebfulton/testcontainers-async-rust.git" }
 tracing = "0.1"
 tracing-attributes = "0.1"
 url = { version = "2", features = ["serde"] }
 
 [dev-dependencies]
-tokio = {version = "1.17.0", features = ["rt", "macros"]}
+tokio = { version = "1.17.0", features = ["rt", "macros"] }
 
 [[test]]
 name = "persistence"
 path = "tests/persistence/lib.rs"
+

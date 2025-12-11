@@ -34,6 +34,12 @@ pub struct Builder {
 {% endif %}    settings: CoreSettings,
 }
 
+impl Default for Builder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Builder {
 {% if persistence != 'None' %}    pub fn new(persistence: {{ PrefixName }}{{ SuffixName }}Persistence) -> Self {
         Self {
