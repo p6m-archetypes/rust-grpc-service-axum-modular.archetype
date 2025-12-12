@@ -18,8 +18,8 @@ permissions: write-all
 run-name: Cut ${{'{'}}{ inputs.version-level }} tag by @${{'{'}}{ github.triggering_actor }}
 
 env:
-  IMAGE_NAME: github-adapter-server
-  APPLICATION_NAME: github-adapter
+  IMAGE_NAME: {{ project-name }}-server
+  APPLICATION_NAME: {{ project-name }}
 
 jobs:
   # ===========================================================================
