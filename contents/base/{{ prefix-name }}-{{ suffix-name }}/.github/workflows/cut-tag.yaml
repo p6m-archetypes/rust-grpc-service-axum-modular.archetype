@@ -46,7 +46,7 @@ jobs:
         uses: p6m-actions/rust-registry-login@v1
         with:
           cargo-tokens: |
-            ${{'{'}}{ vars.CARGO_REGISTRY }}=${{'{'}}{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
+            ${{'{'}}{ vars.CARGO_REGISTRY }}=${{'{'}}{ secrets.P6M_ARTIFACTORY_IDENTITY_TOKEN }}
 
       - name: Cut Tag
         id: cut-tag
@@ -102,9 +102,9 @@ jobs:
       - name: Login to Docker Repository
         uses: p6m-actions/docker-repository-login@v1
         with:
-          registry: ${{'{'}}{ vars.ARTIFACTORY_HOSTNAME }}
-          username: ${{'{'}}{ secrets.ARTIFACTORY_USERNAME }}
-          password: ${{'{'}}{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
+          registry: ${{'{'}}{ vars.P6M_ARTIFACTORY_HOSTNAME }}
+          username: ${{'{'}}{ secrets.P6M_ARTIFACTORY_USERNAME }}
+          password: ${{'{'}}{ secrets.P6M_ARTIFACTORY_IDENTITY_TOKEN }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -117,9 +117,9 @@ jobs:
           file: .platform/docker/prd/Dockerfile
           platforms: ${{'{'}}{ matrix.platform }}
           push: true
-          tags: ${{'{'}}{ vars.ARTIFACTORY_HOSTNAME }}/${{'{'}}{ vars.ARTIFACTORY_PROJECT }}-docker-local/applications/${{'{'}}{ env.IMAGE_NAME }}:${{'{'}}{ env.VERSION }}-${{'{'}}{ matrix.arch }}
+          tags: ${{'{'}}{ vars.P6M_ARTIFACTORY_HOSTNAME }}/${{'{'}}{ vars.P6M_ARTIFACTORY_PROJECT }}-docker-local/applications/${{'{'}}{ env.IMAGE_NAME }}:${{'{'}}{ env.VERSION }}-${{'{'}}{ matrix.arch }}
           secrets: |
-            ybor-studio=Bearer ${{'{'}}{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
+            ybor-studio=Bearer ${{'{'}}{ secrets.P6M_ARTIFACTORY_IDENTITY_TOKEN }}
           cache-from: type=gha,scope=${{'{'}}{ matrix.arch }}
           cache-to: type=gha,mode=max,scope=${{'{'}}{ matrix.arch }}
           provenance: false
@@ -152,7 +152,7 @@ jobs:
         uses: p6m-actions/rust-registry-login@v1
         with:
           cargo-tokens: |
-            ${{'{'}}{ vars.CARGO_REGISTRY }}=${{'{'}}{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
+            ${{'{'}}{ vars.CARGO_REGISTRY }}=${{'{'}}{ secrets.P6M_ARTIFACTORY_IDENTITY_TOKEN }}
 
       - name: Publish to Cargo Registry
         uses: p6m-actions/rust-registry-publish@v1
@@ -174,14 +174,14 @@ jobs:
       - name: Login to Docker Repository
         uses: p6m-actions/docker-repository-login@v1
         with:
-          registry: ${{'{'}}{ vars.ARTIFACTORY_HOSTNAME }}
-          username: ${{'{'}}{ secrets.ARTIFACTORY_USERNAME }}
-          password: ${{'{'}}{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
+          registry: ${{'{'}}{ vars.P6M_ARTIFACTORY_HOSTNAME }}
+          username: ${{'{'}}{ secrets.P6M_ARTIFACTORY_USERNAME }}
+          password: ${{'{'}}{ secrets.P6M_ARTIFACTORY_IDENTITY_TOKEN }}
 
       - name: Create and Push Multi-arch Manifest
         id: manifest
         run: |
-          REGISTRY="${{'{'}}{ vars.ARTIFACTORY_HOSTNAME }}/${{'{'}}{ vars.ARTIFACTORY_PROJECT }}-docker-local/applications"
+          REGISTRY="${{'{'}}{ vars.P6M_ARTIFACTORY_HOSTNAME }}/${{'{'}}{ vars.P6M_ARTIFACTORY_PROJECT }}-docker-local/applications"
           IMAGE="${REGISTRY}/${{'{'}}{ env.IMAGE_NAME }}"
 
           # Create manifest combining both architectures
@@ -218,6 +218,6 @@ jobs:
           image-name: ${{'{'}}{ env.APPLICATION_NAME }}
           environment: "prd"
           digest: ${{'{'}}{ steps.manifest.outputs.digest }}
-          update-manifest-token: ${{'{'}}{ secrets.UPDATE_MANIFEST_TOKEN }}
-          platform-dispatch-url: ${{'{'}}{ vars.PLATFORM_DISPATCH_URL }}
+          update-manifest-token: ${{'{'}}{ secrets.P6M_UPDATE_MANIFEST_TOKEN }}
+          platform-dispatch-url: ${{'{'}}{ vars.P6M_PLATFORM_DISPATCH_URL }}
           directory-name: ${{'{'}}{ env.APPLICATION_NAME }}
